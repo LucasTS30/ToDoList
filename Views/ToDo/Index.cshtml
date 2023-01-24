@@ -1,0 +1,53 @@
+@model ListToDoViewModel
+
+<div class="row">
+    <div class="col text-center">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Date</th>
+                <th scope="col">Done?</th>
+                <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var toDo in Model.ToDos)
+                {
+                <tr>
+                    <th scope="row">@toDo.Id</th>
+                    <td>@toDo.Title</td>
+                    <td>@toDo.Date.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @if (toDo.IsCompleted)
+                        {
+                            <i class="text-success" data-feather="check-square"></i>
+                        }
+                        else
+                        {
+                            <i class="text-danger" data-feather="x-square"></i>
+                        }
+                    </td>
+                    <td>
+                        <a asp-controller="ToDo" asp-action="Complete" asp-route-id="@toDo.Id" onclick="return confirm('Are you sure you want to complete this task?')" class="btn btn-sm btn-success @(toDo.IsCompleted ? "disabled" : "")">Done</a>
+                        <a asp-controller="ToDo" asp-action="Edit" asp-route-id="@toDo.Id" class="btn btn-sm btn-warning @(toDo.IsCompleted ? "disabled" : "")">Edit</a>
+                        <a asp-controller="ToDo" asp-action="Delete" asp-route-id="@toDo.Id" onclick="return confirm('Are you sure you want to delete this task?')" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <a asp-controller="ToDo" asp-action="Create" class="btn btn-primary">New Task</a>
+    </div>
+</div>
